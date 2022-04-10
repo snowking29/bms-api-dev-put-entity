@@ -17,7 +17,7 @@ def update(body,entity,params):
         collection = conn.bmsDB[entity]
     except py.errors.CollectionInvalid as e:
         traceback.print_exc()
-        print("No se encontró la colección en la base de datos: %s" %e)
+        print("No se encontro la colecciÃ³n en la base de datos: %s" %e)
     
     print(params)
     
@@ -27,20 +27,35 @@ def update(body,entity,params):
         key = ""
     
     registerFound = mongodb_document(collection,key)
-    print("Se encontró key?: ", registerFound)
+    print("Se encontro key?: ", registerFound)
     
     if registerFound:
+        
         try:
+            valueToPop = None
+            for llave,valor in body.items() :
+                if isinstance(valor,list):
+                    print(valor)
+                    valueToPop = llave
+                    collection.update({'key':key},{'$push':{llave:{'$each':valor}}})
+            
+            if valueToPop is not None :
+                body.pop(valueToPop)
+                
             collection.update({'key':key}, {'$set': body})
+                
             success = "true"
             code = "00"
-            value = "Se actualizó satisfactoriamente."
+            value = "Se actualizo satisfactoriamente."
+            
         except Exception as e:
+            traceback.print_exc()
             print("Error al insertar documento en base de datos: %s" %e)
+            
     else:
         success = "false"
         code = "01"
-        value = "No se encontró registro en la base de datos."
+        value = "No se encontro registro en la base de datos."
     
     conn.close() 
     

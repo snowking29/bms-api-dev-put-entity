@@ -6,4 +6,4 @@ def mongodb_collection(conn,dbname,collection):
         return conn.dbname.collection
     except py.errors.CollectionInvalid as e:
         traceback.print_exc()
-        print("No se encontró la colección en la base de datos: %s" %e)
+        print("No se encontro la coleccion en la base de datos: %s" %e)
