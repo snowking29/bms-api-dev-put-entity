@@ -17,15 +17,13 @@ def update(body,entity,params):
         collection = conn.bmsDB[entity]
     except py.errors.CollectionInvalid as e:
         traceback.print_exc()
-        print("No se encontro la colección en la base de datos: %s" %e)
+        print("No se encontro la coleccion en la base de datos: %s" %e)
     
-    print(params)
+    key = ""
     
     if "key" in params:
         key = params["key"]
-    else:
-        key = ""
-    
+        
     registerFound = mongodb_document(collection,key)
     print("Se encontro key?: ", registerFound)
     
@@ -50,7 +48,7 @@ def update(body,entity,params):
             
         except Exception as e:
             traceback.print_exc()
-            print("Error al insertar documento en base de datos: %s" %e)
+            print("Error al actualizar documento en base de datos: %s" %e)
             
     else:
         success = "false"
@@ -62,15 +60,13 @@ def update(body,entity,params):
     response = {
         "key":key,
         "success": success,
-        "configuration": {
-            "meta": {
-                "status": {
-                    "code": code,
-                    "message_ilgn": [{
-                        "locale": "es_PE",
-                        "value": value
-                    }]
-                }
+        "meta": {
+            "status": {
+                "code": code,
+                "message_ilgn": [{
+                    "locale": "es_PE",
+                    "value": value
+                }]
             }
         }
     }
